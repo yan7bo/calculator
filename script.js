@@ -40,9 +40,20 @@ function resetFormula(formula) {
     formula.phase = "num2";
 }
 
+function resetBtnColor(btn) {
+    btn.removeAttribute("style");
+}
+
+function updateBtnColor(btn) {
+    if(LIST_OPERATORS.includes(btn.textContent)) {
+        btn.style.backgroundColor = OPERATOR_BTN_CLICK_COL;
+    }
+}
+
 function addNumberBtns(calcContainer, formula, input) {
     calcContainer.addEventListener("click", (event) => {
         let currentBtn = event.target.textContent;
+        let currentBtnID = event.target.id;
         let currentPhase = formula.phase;
 
         if(LIST_NUMBERS.includes(+currentBtn)){
@@ -52,7 +63,10 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
             formula[currentPhase] = +input;
-            formula.operator = currentBtn;
+            formula.operator = event.target;
+
+            updateBtnColor(event.target);
+
             input = "";
             if(formula.phase == "num1") {
                 formula.phase = "num2";
@@ -60,34 +74,14 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(formula);
         } else if(currentBtn == "=") {
             formula[currentPhase] = +input;
-            formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
-            updateScreen(formula.solution);
-            resetFormula(formula);
-            // console.log(formula);
-        }
+            formula.solution = doCalculation(formula.num1, formula.operator.textContent, formula.num2);
+            resetBtnColor(formula.operator);
 
-        /*
-        if(currentPhase == "num1" && LIST_NUMBERS.includes(+currentBtn)) {
-            formula[currentPhase] = +currentBtn;
-            formula.phase = "operator";
-            console.log(formula);
-        } else if(currentPhase == "operator" && LIST_OPERATORS.includes(currentBtn)) {
-            formula[currentPhase] = currentBtn;
-            formula.phase = "num2";
-            console.log(formula);
-        } else if(currentPhase == "num2" && LIST_NUMBERS.includes(+currentBtn)) {
-            formula[currentPhase] = +currentBtn;
-            formula.phase = "solution";
-            console.log(formula);
-        } else if(currentPhase == "solution" && currentBtn == "=") {
-            formula[currentPhase] = doCalculation(formula.num1, formula.operator, formula.num2);
             updateScreen(formula.solution);
             resetFormula(formula);
-            console.log(formula);
-        } else {
-            console.log("error");
+            input = "";
         }
-        */
+        console.log(formula);
     })
 }
 
@@ -95,6 +89,8 @@ function addNumberBtns(calcContainer, formula, input) {
 const LIST_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const LIST_OPERATORS = ["/", "*", "-", "+"];
 const LIST_FUNCTIONS = ["CLEAR", "BACKSPACE"];
+const operatorBtnBGColor = "grey";
+const OPERATOR_BTN_CLICK_COL = "white";
 
 function main() {
     let formula = {num1: null, operator: null, num2: null, solution: null, phase: "num1"};
