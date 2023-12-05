@@ -1,0 +1,32 @@
+#calcContainer {
+    border: solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 12px;
+    height: 579px;
+    width: 342px;
+}
+
+#calcScreen {
+    height: 150px;
+    width: 318px;
+    background-color: grey;
+}
+
+.row {
+    display: flex;
+    gap: 6px;
+}
+
+.btnBig {
+    height: 75px;
+    width: 156px; 
+}
+
+.btnSmall {
+    height: 75px;
+    width: 75px;
+}
