@@ -37,13 +37,35 @@ function resetFormula(formula) {
     formula.operator = null;
     formula.num2 = null;
     formula.solution = null;
-    formula.phase = "operator";
+    formula.phase = "num2";
 }
 
-function addNumberBtns(calcContainer, formula) {
+function addNumberBtns(calcContainer, formula, input) {
     calcContainer.addEventListener("click", (event) => {
         let currentBtn = event.target.textContent;
         let currentPhase = formula.phase;
+
+        if(LIST_NUMBERS.includes(+currentBtn)){
+            input += currentBtn;
+            console.log(input);
+            console.log(formula);
+        } else if(LIST_OPERATORS.includes(currentBtn)) {
+            formula[currentPhase] = +input;
+            formula.operator = currentBtn;
+            input = "";
+            if(formula.phase == "num1") {
+                formula.phase = "num2";
+            }
+            console.log(formula);
+        } else if(currentBtn == "=") {
+            formula[currentPhase] = +input;
+            formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+            updateScreen(formula.solution);
+            resetFormula(formula);
+            console.log(formula);
+        }
+
+        /*
         if(currentPhase == "num1" && LIST_NUMBERS.includes(+currentBtn)) {
             formula[currentPhase] = +currentBtn;
             formula.phase = "operator";
@@ -64,6 +86,7 @@ function addNumberBtns(calcContainer, formula) {
         } else {
             console.log("error");
         }
+        */
     })
 }
 
@@ -76,7 +99,7 @@ function main() {
     let formula = {num1: null, operator: null, num2: null, solution: null, phase: "num1"};
     const calcContainer = document.querySelector("#calcContainer");
 
-    addNumberBtns(calcContainer, formula);
+    addNumberBtns(calcContainer, formula, "");
 }
 
 main();
