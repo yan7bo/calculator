@@ -27,9 +27,9 @@ function doCalculation(num1, operator, num2) {
     }
 }
 
-function updateScreen(solution) {
+function updateScreen(value) {
     const calcScreen = document.querySelector("#calcScreen > a");
-    calcScreen.textContent = solution;
+    calcScreen.textContent = value;
 }
 
 function resetFormula(formula) {
@@ -47,8 +47,9 @@ function addNumberBtns(calcContainer, formula, input) {
 
         if(LIST_NUMBERS.includes(+currentBtn)){
             input += currentBtn;
-            console.log(input);
-            console.log(formula);
+            updateScreen(input);
+            // console.log(input);
+            // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
             formula[currentPhase] = +input;
             formula.operator = currentBtn;
@@ -56,13 +57,13 @@ function addNumberBtns(calcContainer, formula, input) {
             if(formula.phase == "num1") {
                 formula.phase = "num2";
             }
-            console.log(formula);
+            // console.log(formula);
         } else if(currentBtn == "=") {
             formula[currentPhase] = +input;
             formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
             updateScreen(formula.solution);
             resetFormula(formula);
-            console.log(formula);
+            // console.log(formula);
         }
 
         /*
