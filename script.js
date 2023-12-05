@@ -32,25 +32,34 @@ function updateScreen(solution) {
     calcScreen.textContent = solution;
 }
 
-function addNumberBtns(calcContainer, formula, phase) {
+function resetFormula(formula) {
+    formula.num1 = formula.solution;
+    formula.operator = null;
+    formula.num2 = null;
+    formula.solution = null;
+    formula.phase = "operator";
+}
+
+function addNumberBtns(calcContainer, formula) {
     calcContainer.addEventListener("click", (event) => {
         let currentBtn = event.target.textContent;
-        console.log(currentBtn);
-        if(phase == "num1" && LIST_NUMBERS.includes(+currentBtn)) {
-            formula[phase] = +currentBtn;
-            phase = "operator";
+        let currentPhase = formula.phase;
+        if(currentPhase == "num1" && LIST_NUMBERS.includes(+currentBtn)) {
+            formula[currentPhase] = +currentBtn;
+            formula.phase = "operator";
             console.log(formula);
-        } else if(phase == "operator" && LIST_OPERATORS.includes(currentBtn)) {
-            formula[phase] = currentBtn;
-            phase = "num2";
+        } else if(currentPhase == "operator" && LIST_OPERATORS.includes(currentBtn)) {
+            formula[currentPhase] = currentBtn;
+            formula.phase = "num2";
             console.log(formula);
-        } else if(phase == "num2" && LIST_NUMBERS.includes(+currentBtn)) {
-            formula[phase] = +currentBtn;
-            phase = "solution";
+        } else if(currentPhase == "num2" && LIST_NUMBERS.includes(+currentBtn)) {
+            formula[currentPhase] = +currentBtn;
+            formula.phase = "solution";
             console.log(formula);
-        } else if(phase == "solution" && currentBtn == "=") {
-            formula[phase] = doCalculation(formula.num1, formula.operator, formula.num2);
+        } else if(currentPhase == "solution" && currentBtn == "=") {
+            formula[currentPhase] = doCalculation(formula.num1, formula.operator, formula.num2);
             updateScreen(formula.solution);
+            resetFormula(formula);
             console.log(formula);
         } else {
             console.log("error");
@@ -64,11 +73,10 @@ const LIST_OPERATORS = ["/", "*", "-", "+"];
 const LIST_FUNCTIONS = ["CLEAR", "BACKSPACE"];
 
 function main() {
-    let formula = {num1: null, operator: null, num2: null, solution: null};
-    let phase = "num1";
+    let formula = {num1: null, operator: null, num2: null, solution: null, phase: "num1"};
     const calcContainer = document.querySelector("#calcContainer");
 
-    addNumberBtns(calcContainer, formula, phase);
+    addNumberBtns(calcContainer, formula);
 }
 
 main();
