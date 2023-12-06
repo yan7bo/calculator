@@ -61,7 +61,7 @@ function addNumberBtns(calcContainer, formula, input) {
 
         if(LIST_NUMBERS.includes(+currentBtn)){
             input += currentBtn;
-            formula[currentPhase] = +input;
+            formula[formula.phase] = +input;
             updateScreen(input);
             // console.log(input);
             // console.log(formula);
@@ -82,7 +82,7 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(formula);
         } else if(currentBtn == "=") {
             if(input != "") {
-                formula[currentPhase] = +input;
+                formula[formula.phase] = +input;
             }
             formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
             console.log(formula);
@@ -96,6 +96,25 @@ function addNumberBtns(calcContainer, formula, input) {
             resetBtnColor(document.querySelectorAll("button"));
             input = "";
             updateScreen(formula.num1);
+        } else if(currentBtn == "BACKSPACE") {
+            if(formula.phase == "num1") {
+                input = "" + formula[formula.phase];
+                input = input.slice(0, input.length - 1);
+                formula[formula.phase] = +input;
+                updateScreen(formula[formula.phase]);
+            } else if(formula.phase == "num2") {
+                if(input == "") {
+                    formula.operator = "";
+                    formula.phase = "num1";
+                    resetBtnColor(document.querySelectorAll("button"));
+                    updateScreen(formula[formula.phase]);
+                } else {
+                    input = "" + formula[formula.phase];
+                    input = input.slice(0, input.length - 1);
+                    formula[formula.phase] =+ input;
+                    updateScreen(formula[formula.phase]);
+                }
+            }
         }
         console.log(formula);
     })
