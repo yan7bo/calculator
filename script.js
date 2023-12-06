@@ -31,7 +31,7 @@ function doCalculation(num1, operator, num2) {
 }
 
 function round(num) {
-    if(("" + num).includes(".")) {
+    if(("" + num).includes(".") && ("" + num).length > 10) {
         return num.toPrecision(SIG_DIGS);
     } else {
         return num;
@@ -103,6 +103,7 @@ function getEqual(value, formula, input) {
     formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
     resetBtnColor(document.querySelectorAll("button"));
 
+    console.log(formula.solution);
     updateScreen(formula.solution);
     resetFormula(formula, "num1");
     input = "";
