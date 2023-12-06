@@ -46,13 +46,14 @@ function updateScreen(value) {
     calcScreen.textContent = value;
 }
 
-function resetFormula(formula, phase) {
+function resetFormula(formula, phase, str) {
     // used to reset the forumla with CLEAR or after clicking "="
     formula.num1 = formula.solution;
     formula.operator = "";
     formula.num2 = 0;
     formula.solution = 0;
     formula.phase = phase;
+    formula.inputStr = str;
 }
 
 function resetBtnColor(listBtns) {
@@ -73,6 +74,7 @@ function getNum(value, formula, input) {
     (input.length < SIG_DIGS && !input.includes("."))) {
         input += value;
         formula[formula.phase] = +input;
+        formula.inputStr += value;
         updateScreen(input);
     }
     return input;
@@ -80,15 +82,17 @@ function getNum(value, formula, input) {
 
 function getOperator(value, formula, input) {
     // stores symbol after input including operator symbol
-    input = "";
+    
     if(formula.phase == "num1") {
         formula.phase = "num2";
+        formula.inputStr += value;
     } else if(formula.phase == "num2") {
         formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
         updateScreen(formula.solution);
-        resetFormula(formula, "num2");
+        resetFormula(formula, "num2", "" + formula.solution);
     }
     formula.operator = value;
+    input = "";
 
     resetBtnColor(document.querySelectorAll("button"));
     updateBtnColor(event.target);
@@ -98,20 +102,25 @@ function getOperator(value, formula, input) {
 function getEqual(value, formula, input) {
     // performs calculation after "=" input (or "Enter" key)
     if(input != "") {
+        // if there has been a number input, set that number input into formula
+        // operators and equals sign both reset input
         formula[formula.phase] = +input;
+    }
+    if(LIST_OPERATORS.includes(formula.inputStr.slice(formula.inputStr.length - 1))) {
+        formula.num2 = formula.num1;
     }
     formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
     resetBtnColor(document.querySelectorAll("button"));
 
     updateScreen(formula.solution);
-    resetFormula(formula, "num1");
+    resetFormula(formula, "num1", "" + formula.solution);
     input = "";
     return input;
 }
 
 function getClear(value, formula, input) {
     // resets formula after clicking "CLEAR" button
-    resetFormula(formula, "num1");
+    resetFormula(formula, "num1", "");
     resetBtnColor(document.querySelectorAll("button"));
     input = "";
     updateScreen(formula.num1);
@@ -138,6 +147,7 @@ function getDelete(value, formula, input) {
             updateScreen(formula[formula.phase]);
         }
     }
+    formula.inputStr = formula.inputStr.slice(0, formula.inputStr.length - 1);
     return input;
 }
 
@@ -149,6 +159,7 @@ function getDecimal(value, formula, input) {
         } else {
             input += value;
         }
+        formula.inputStr += value;
         updateScreen(input);
     }
     return input;
@@ -211,7 +222,7 @@ const OPERATOR_BTN_CLICK_COL = "white";
 const SIG_DIGS = 9;
 
 function main() {
-    let formula = {num1: 0, operator: "", num2: 0, solution: 0, phase: "num1"};
+    let formula = {num1: 0, operator: "", num2: 0, solution: 0, phase: "num1", inputStr: ""};
     const calcContainer = document.querySelector("#calcContainer");
 
     addBtns(calcContainer, formula, "");
@@ -219,9 +230,6 @@ function main() {
 }
 
 main();
-
-// Problem: if user is at num2 but does not input numbers and clicks =, operator is reset and phase is at num1 (so if user clicks a number button, it adds the num to the digit of num1). Is this intended?
-// Problem: entering 5 + = gives the expression 5 + 0 =. In Apple calculator, the expression would be 5 + 5 =. This is also the case for Windows calculator
 
 // Styles to add:
 // - if an operator key was inputted, the operator button should be highlighted
