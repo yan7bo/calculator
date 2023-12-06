@@ -16,16 +16,25 @@ function divide(num1, num2) {
 
 
 function doCalculation(num1, operator, num2) {
+    let result = 0;
     if(operator == "+") {
-        return add(num1, num2);
+        return round(add(num1, num2));
     } else if(operator == "-") {
-        return subtract(num1, num2);
+        return round(subtract(num1, num2));
     } else if(operator == "*") {
-        return multiply(num1, num2);
+        return round(multiply(num1, num2));
     } else if(operator == "/") {
-        return divide(num1, num2);
+        return round(divide(num1, num2));
     } else if(operator == "") {
-        return num1;
+        return round(num1);
+    }
+}
+
+function round(num) {
+    if(("" + num).includes(".")) {
+        return num.toPrecision(9);
+    } else {
+        return num;
     }
 }
 
@@ -115,6 +124,8 @@ function addNumberBtns(calcContainer, formula, input) {
                     updateScreen(formula[formula.phase]);
                 }
             }
+        } else if(currentBtn == ".") {
+
         }
         console.log(formula);
     })
@@ -135,3 +146,5 @@ function main() {
 }
 
 main();
+
+// Problem: you can keep entering numbers until screen overflows. Screen also shows scientific numbers.
