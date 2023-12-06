@@ -92,7 +92,7 @@ function addNumberBtns(calcContainer, formula, input) {
             resetFormula(formula, "");
             resetBtnColor(document.querySelectorAll("button"));
             input = "";
-            updateScreen(input);
+            updateScreen(formula.num1);
         }
         console.log(formula);
     })
