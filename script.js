@@ -61,6 +61,7 @@ function updateBtnColor(btn) {
     }
 }
 
+
 function addNumberBtns(calcContainer, formula, input) {
     // adds click event handler to number buttons and operator buttons
     calcContainer.addEventListener("click", (event) => {
@@ -127,7 +128,9 @@ function addNumberBtns(calcContainer, formula, input) {
                 }
             }
         } else if(currentBtn == ".") {
-
+            if(!input.includes(".")) {
+                input += currentBtn;
+            }
         }
         console.log(formula);
     })
