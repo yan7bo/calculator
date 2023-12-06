@@ -32,12 +32,12 @@ function updateScreen(value) {
     calcScreen.textContent = value;
 }
 
-function resetFormula(formula) {
+function resetFormula(formula, phase) {
     formula.num1 = formula.solution;
     formula.operator = null;
     formula.num2 = null;
     formula.solution = null;
-    formula.phase = "num2";
+    formula.phase = phase;
 }
 
 function resetBtnColor(btn) {
@@ -51,6 +51,7 @@ function updateBtnColor(btn) {
 }
 
 function addNumberBtns(calcContainer, formula, input) {
+    // adds click event handler to number buttons and operator buttons
     calcContainer.addEventListener("click", (event) => {
         let currentBtn = event.target.textContent;
         let currentBtnID = event.target.id;
@@ -58,11 +59,12 @@ function addNumberBtns(calcContainer, formula, input) {
 
         if(LIST_NUMBERS.includes(+currentBtn)){
             input += currentBtn;
+            formula[currentPhase] = +input;
             updateScreen(input);
             // console.log(input);
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
-            formula[currentPhase] = +input;
+            // formula[currentPhase] = +input;
             formula.operator = event.target;
 
             updateBtnColor(event.target);
@@ -78,13 +80,22 @@ function addNumberBtns(calcContainer, formula, input) {
             resetBtnColor(formula.operator);
 
             updateScreen(formula.solution);
-            resetFormula(formula);
+            resetFormula(formula, "num2");
             input = "";
+        } else if(currentBtn == "CLEAR") {
+            resetFormula(formula, "");
+            input = "";
+            updateScreen(input);
         }
         console.log(formula);
     })
+
+    addFunctions(calcContainer, formula, input);
 }
 
+function addFunctions() {
+
+}
 
 const LIST_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const LIST_OPERATORS = ["/", "*", "-", "+"];
@@ -100,3 +111,8 @@ function main() {
 }
 
 main();
+
+// Problems:
+// - after you do one operation, the function automatically assumes that any # input is for num2.
+//   this should only be the case if user clicks an operator. Otherwise the # input should
+//   reset num1;
