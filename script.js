@@ -24,6 +24,8 @@ function doCalculation(num1, operator, num2) {
         return multiply(num1, num2);
     } else if(operator == "/") {
         return divide(num1, num2);
+    } else if(operator == "") {
+        return num1;
     }
 }
 
@@ -34,14 +36,14 @@ function updateScreen(value) {
 
 function resetFormula(formula, phase) {
     formula.num1 = formula.solution;
-    formula.operator = null;
-    formula.num2 = null;
-    formula.solution = null;
+    formula.operator = "";
+    formula.num2 = 0;
+    formula.solution = 0;
     formula.phase = phase;
 }
 
-function resetBtnColor(btn) {
-    btn.removeAttribute("style");
+function resetBtnColor(listBtns) {
+    listBtns.forEach((element) => {element.removeAttribute("style")});
 }
 
 function updateBtnColor(btn) {
@@ -64,8 +66,9 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(input);
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
-            formula.operator = event.target;
+            formula.operator = event.target.textContent;
 
+            resetBtnColor(document.querySelectorAll("button"));
             updateBtnColor(event.target);
 
             input = "";
@@ -74,27 +77,27 @@ function addNumberBtns(calcContainer, formula, input) {
             }
             // console.log(formula);
         } else if(currentBtn == "=") {
-            formula[currentPhase] = +input;
-            formula.solution = doCalculation(formula.num1, formula.operator.textContent, formula.num2);
-            resetBtnColor(formula.operator);
+            console.log(input);
+            if(input != "") {
+                formula[currentPhase] = +input;
+            }
+            formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+            console.log(formula);
+            resetBtnColor(document.querySelectorAll("button"));
 
             updateScreen(formula.solution);
             resetFormula(formula, "num1");
             input = "";
         } else if(currentBtn == "CLEAR") {
             resetFormula(formula, "");
+            resetBtnColor(document.querySelectorAll("button"));
             input = "";
             updateScreen(input);
         }
         console.log(formula);
     })
-
-    addFunctions(calcContainer, formula, input);
 }
 
-function addFunctions() {
-
-}
 
 const LIST_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const LIST_OPERATORS = ["/", "*", "-", "+"];
@@ -103,15 +106,10 @@ const operatorBtnBGColor = "grey";
 const OPERATOR_BTN_CLICK_COL = "white";
 
 function main() {
-    let formula = {num1: null, operator: null, num2: null, solution: null, phase: "num1"};
+    let formula = {num1: 0, operator: "", num2: 0, solution: 0, phase: "num1"};
     const calcContainer = document.querySelector("#calcContainer");
 
     addNumberBtns(calcContainer, formula, "");
 }
 
 main();
-
-// Problems:
-// - if user clicks an operator button after clicking an operator button, both buttons will
-//   be highlighted and the most recent button will be the one assigned to formula object.
-//   Only the most recent operator button should be highlighted.
