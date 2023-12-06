@@ -73,7 +73,7 @@ function getNum(value, formula, input) {
     (input.length < SIG_DIGS && !input.includes("."))) {
         input += value;
         formula[formula.phase] = +input;
-        updateScreen(formula[formula.phase]);
+        updateScreen(input);
     }
     return input;
 }
@@ -103,7 +103,6 @@ function getEqual(value, formula, input) {
     formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
     resetBtnColor(document.querySelectorAll("button"));
 
-    console.log(formula.solution);
     updateScreen(formula.solution);
     resetFormula(formula, "num1");
     input = "";
@@ -145,7 +144,11 @@ function getDelete(value, formula, input) {
 function getDecimal(value, formula, input) {
     // records decimal point after inputting "."
     if(!input.includes(".")) {
-        input += value;
+        if(formula[formula.phase] == 0) {
+            input = "0" + value;
+        } else {
+            input += value;
+        }
         updateScreen(input);
     }
     return input;
@@ -172,7 +175,7 @@ function addBtns(calcContainer, formula, input) {
             input = getDecimal(currentBtn, formula, input);
         }
 
-        // console.log(formula);
+        console.log(formula);
     })
 }
 
@@ -195,7 +198,7 @@ function addKeys(formula, input) {
             input = getDecimal(currentKey, formula, input);
         }
 
-        // console.log(formula);
+        console.log(formula);
     })
 }
 
@@ -217,8 +220,10 @@ function main() {
 
 main();
 
-// Problem: fractional division will fill in as many 0s as calScreen can show
-// Problem: if phase is num1, when user clicks an operator, phase becomes num2 (this is especially problematic when initializing or after clicking CLEAR)
-// Problem: when inputing 1.05, when user clicks 0, calcScreen shows 1. When user clicks 5, calcScreen shows 1.05
 // Problem: if user is at num2 but does not input numbers and clicks =, operator is reset and phase is at num1 (so if user clicks a number button, it adds the num to the digit of num1). Is this intended?
-// Problem: 0.23 / 5 gives value.toExponential is not a function (line 44)
+// Problem: entering 5 + = gives the expression 5 + 0 =. In Apple calculator, the expression would be 5 + 5 =. This is also the case for Windows calculator
+
+// Styles to add:
+// - if an operator key was inputted, the operator button should be highlighted
+// - if a key is inputted, the correct button should show a click
+// - add a formula screen above calcScreen
