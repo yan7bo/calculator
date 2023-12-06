@@ -69,9 +69,11 @@ function addNumberBtns(calcContainer, formula, input) {
         let currentPhase = formula.phase;
 
         if(LIST_NUMBERS.includes(+currentBtn)){
-            input += currentBtn;
-            formula[formula.phase] = +input;
-            updateScreen(input);
+            if(input.length < 9) {
+                input += currentBtn;
+                formula[formula.phase] = +input;
+                updateScreen(input);
+            }
             // console.log(input);
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
@@ -137,6 +139,7 @@ const LIST_OPERATORS = ["/", "*", "-", "+"];
 const LIST_FUNCTIONS = ["CLEAR", "BACKSPACE"];
 const operatorBtnBGColor = "grey";
 const OPERATOR_BTN_CLICK_COL = "white";
+const SIG_DIGS = 9;
 
 function main() {
     let formula = {num1: 0, operator: "", num2: 0, solution: 0, phase: "num1"};
