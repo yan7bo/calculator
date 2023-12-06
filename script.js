@@ -64,7 +64,6 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(input);
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
-            // formula[currentPhase] = +input;
             formula.operator = event.target;
 
             updateBtnColor(event.target);
@@ -80,7 +79,7 @@ function addNumberBtns(calcContainer, formula, input) {
             resetBtnColor(formula.operator);
 
             updateScreen(formula.solution);
-            resetFormula(formula, "num2");
+            resetFormula(formula, "num1");
             input = "";
         } else if(currentBtn == "CLEAR") {
             resetFormula(formula, "");
@@ -113,6 +112,6 @@ function main() {
 main();
 
 // Problems:
-// - after you do one operation, the function automatically assumes that any # input is for num2.
-//   this should only be the case if user clicks an operator. Otherwise the # input should
-//   reset num1;
+// - if user clicks an operator button after clicking an operator button, both buttons will
+//   be highlighted and the most recent button will be the one assigned to formula object.
+//   Only the most recent operator button should be highlighted.
