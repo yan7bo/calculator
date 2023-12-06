@@ -76,7 +76,7 @@ function addNumberBtns(calcContainer, formula, input) {
             if((input.length < 10 && input.includes(".")) || (input.length < 9 && !input.includes("."))) {
                 input += currentBtn;
                 formula[formula.phase] = +input;
-                updateScreen(input);
+                updateScreen(formula[formula.phase]);
             }
         } else if(LIST_OPERATORS.includes(currentBtn)) {
             input = "";
@@ -133,7 +133,7 @@ function addNumberBtns(calcContainer, formula, input) {
                 updateScreen(input);
             }
         }
-        console.log(formula);
+        // console.log(formula);
     })
 }
 
@@ -144,7 +144,7 @@ function addKeys(formula, input) {
             if((input.length < 10 && input.includes(".")) || (input.length < 9 && !input.includes("."))) {
                 input += currentKey;
                 formula[formula.phase] = +input;
-                updateScreen(input);
+                updateScreen(formula[formula.phase]);
             }
         } else if(LIST_OPERATORS.includes(currentKey)) {
             input = "";
@@ -194,8 +194,8 @@ function addKeys(formula, input) {
                 updateScreen(input);
             }
         }
-        console.log(formula);
-        console.log(currentKey);
+        // console.log(formula);
+        // console.log(currentKey);
     })
 }
 
@@ -217,5 +217,4 @@ function main() {
 
 main();
 
-// to do: add keyboard functionality
 // Problem: keeping pressing 0 will start showing 000000 even though the number value is 0.
