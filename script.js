@@ -66,18 +66,21 @@ function addNumberBtns(calcContainer, formula, input) {
             // console.log(input);
             // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
+            input = "";
+            if(formula.phase == "num1") {
+                formula.phase = "num2";
+            } else if(formula.phase == "num2") {
+                formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+                updateScreen(formula.solution);
+                resetFormula(formula, "num2");
+            }
             formula.operator = event.target.textContent;
 
             resetBtnColor(document.querySelectorAll("button"));
             updateBtnColor(event.target);
 
-            input = "";
-            if(formula.phase == "num1") {
-                formula.phase = "num2";
-            }
             // console.log(formula);
         } else if(currentBtn == "=") {
-            console.log(input);
             if(input != "") {
                 formula[currentPhase] = +input;
             }
@@ -89,7 +92,7 @@ function addNumberBtns(calcContainer, formula, input) {
             resetFormula(formula, "num1");
             input = "";
         } else if(currentBtn == "CLEAR") {
-            resetFormula(formula, "");
+            resetFormula(formula, "num1");
             resetBtnColor(document.querySelectorAll("button"));
             input = "";
             updateScreen(formula.num1);
