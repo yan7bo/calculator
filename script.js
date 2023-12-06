@@ -70,7 +70,7 @@ function addNumberBtns(calcContainer, formula, input) {
         let currentPhase = formula.phase;
 
         if(LIST_NUMBERS.includes(+currentBtn)){
-            if(input.length < 9) {
+            if((input.length < 10 && input.includes(".")) || (input.length < 9 && !input.includes("."))) {
                 input += currentBtn;
                 formula[formula.phase] = +input;
                 updateScreen(input);
