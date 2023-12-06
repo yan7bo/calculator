@@ -78,8 +78,6 @@ function addNumberBtns(calcContainer, formula, input) {
                 formula[formula.phase] = +input;
                 updateScreen(input);
             }
-            // console.log(input);
-            // console.log(formula);
         } else if(LIST_OPERATORS.includes(currentBtn)) {
             input = "";
             if(formula.phase == "num1") {
@@ -89,7 +87,7 @@ function addNumberBtns(calcContainer, formula, input) {
                 updateScreen(formula.solution);
                 resetFormula(formula, "num2");
             }
-            formula.operator = event.target.textContent;
+            formula.operator = currentBtn;
 
             resetBtnColor(document.querySelectorAll("button"));
             updateBtnColor(event.target);
@@ -100,7 +98,6 @@ function addNumberBtns(calcContainer, formula, input) {
                 formula[formula.phase] = +input;
             }
             formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
-            console.log(formula);
             resetBtnColor(document.querySelectorAll("button"));
 
             updateScreen(formula.solution);
@@ -133,9 +130,72 @@ function addNumberBtns(calcContainer, formula, input) {
         } else if(currentBtn == ".") {
             if(!input.includes(".")) {
                 input += currentBtn;
+                updateScreen(input);
             }
         }
         console.log(formula);
+    })
+}
+
+function addKeys(formula, input) {
+    addEventListener("keydown", (event) => {
+        let currentKey = event.key;
+        if(LIST_NUMBERS.includes(+currentKey)){
+            if((input.length < 10 && input.includes(".")) || (input.length < 9 && !input.includes("."))) {
+                input += currentKey;
+                formula[formula.phase] = +input;
+                updateScreen(input);
+            }
+        } else if(LIST_OPERATORS.includes(currentKey)) {
+            input = "";
+            if(formula.phase == "num1") {
+                formula.phase = "num2";
+            } else if(formula.phase == "num2") {
+                formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+                updateScreen(formula.solution);
+                resetFormula(formula, "num2");
+            }
+            formula.operator = currentKey;
+
+            // resetBtnColor(document.querySelectorAll("button"));
+            // updateBtnColor(event.target);
+        } else if(currentKey == "=" || currentKey == "Enter") {
+            if(input != "") {
+                formula[formula.phase] = +input;
+            }
+            formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+            // resetBtnColor(document.querySelectorAll("button"));
+
+            updateScreen(formula.solution);
+            resetFormula(formula, "num1");
+            input = "";
+        } else if(currentKey == "Backspace" || currentKey == "Delete") {
+            if(formula.phase == "num1") {
+                input = "" + formula[formula.phase];
+                input = input.slice(0, input.length - 1);
+                formula[formula.phase] = +input;
+                updateScreen(formula[formula.phase]);
+            } else if(formula.phase == "num2") {
+                if(input == "") {
+                    formula.operator = "";
+                    formula.phase = "num1";
+                    // resetBtnColor(document.querySelectorAll("button"));
+                    updateScreen(formula[formula.phase]);
+                } else {
+                    input = "" + formula[formula.phase];
+                    input = input.slice(0, input.length - 1);
+                    formula[formula.phase] =+ input;
+                    updateScreen(formula[formula.phase]);
+                }
+            }
+        } else if(currentKey == ".") {
+            if(!input.includes(".")) {
+                input += currentKey;
+                updateScreen(input);
+            }
+        }
+        console.log(formula);
+        console.log(currentKey);
     })
 }
 
@@ -152,8 +212,10 @@ function main() {
     const calcContainer = document.querySelector("#calcContainer");
 
     addNumberBtns(calcContainer, formula, "");
+    addKeys(formula, "");
 }
 
 main();
 
-// Problem: you can keep entering numbers until screen overflows. Screen also shows scientific numbers.
+// to do: add keyboard functionality
+// Problem: keeping pressing 0 will start showing 000000 even though the number value is 0.
