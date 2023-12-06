@@ -40,6 +40,9 @@ function round(num) {
 
 function updateScreen(value) {
     const calcScreen = document.querySelector("#calcScreen > a");
+    if(("" + value).length > 10) {
+        value = value.toExponential();
+    }
     calcScreen.textContent = value;
 }
 
