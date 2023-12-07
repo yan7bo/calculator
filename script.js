@@ -54,16 +54,17 @@ function updateScreen(inputStr, value) {
 
 function updateScreenFormula(inputStr) {
     // updates the formula display in calcScreen
-    const calcScreenFormula = document.querySelector("#calcScreen :first-child");
     calcScreenFormula.textContent = inputStr;
 }
 
 function updateScreenValue(value) {
     // updates the value display in calcScreen
     const calcScreenValue = document.querySelector("#calcScreen :nth-child(2)");
+    /*
     if(("" + value).length > 10) {
         value = value.toExponential();
     }
+    */
     calcScreenValue.textContent = value;
 }
 
@@ -89,14 +90,59 @@ function updateBtnColor(btn) {
     }
 }
 
+function addCommas(input) {
+    // adds comma delims to numbers
+
+    // make sure input is a string
+    input = "" + input;
+
+    let output = "";
+    let indexDecimal = input.indexOf(".");
+    let left = "";
+    let right = "";
+    if(indexDecimal >= 0) {
+        left = input.slice(0, indexDecimal);
+        right = input.slice(indexDecimal + 1);
+    } else {
+        left = input.slice(0, input.length);
+    }
+    let numLeft = left.length;
+    for(let i = 0; i < numLeft; i++) {
+        if((i % 3) == (numLeft % 3) && i > 0) {
+            output += ",";
+        }
+        output += left[i];
+    }
+    if(right != "") {
+        output += "." + right;
+    }
+    // console.log(output);
+    return output;
+}
+
 function getNum(value, formula, input) {
     // stores value after input including number value
     if((input.length < SIG_DIGS + 1 && input.includes(".")) || 
     (input.length < SIG_DIGS && !input.includes("."))) {
         input += value;
         formula[formula.phase] = +input;
-        formula.inputStr += value;
-        updateScreenValue(input);
+        // formula.inputStr += value;
+        switch(formula.phase) {
+            case "num1":
+                formula.inputStr = addCommas(formula.num1);
+                break;
+            case "num2":
+                formula.inputStr = addCommas(formula.num1) + formula.operator + addCommas(formula.num2);
+                break;
+        }
+        /*
+        if(formula[formula.phase] >= 10 ** 10) {updateScreenFormula
+            // if the user continues to input numbers past SIG_DIGS, use scientific notation
+            formula[formula.phase] = formula[formula.phase].toExponential();
+            input = "" + formula[formula.phase];
+        }
+        */
+        updateScreenValue(addCommas(input));
     }
     return input;
 }
@@ -122,7 +168,7 @@ function getOperator(value, formula, input) {
     
     if(formula.phase == "num1") {
         formula.phase = "num2";
-        formula.inputStr = "" + formula.num1 + value;
+        formula.inputStr = addCommas(formula.num1) + value;
         updateScreenFormula(formula.inputStr);
     } else if(formula.phase == "num2") {
         formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
@@ -154,7 +200,7 @@ function getEqual(value, formula, input) {
     }
     if(LIST_OPERATORS.includes(formula.inputStr.slice(formula.inputStr.length - 1))) {
         formula.num2 = formula.num1;
-        formula.inputStr += formula.num2;
+        formula.inputStr += addCommas(formula.num2);
     }
     if(formula.num2 == 0) {
         alert("You can't divide by 0!");
@@ -172,7 +218,7 @@ function getEqual(value, formula, input) {
 
     resetFormula(formula, "num1", formula.inputStr);
     updateScreenFormula(formula.inputStr);
-    updateScreenValue(formula[formula.phase]);
+    updateScreenValue(addCommas(formula[formula.phase]));
     input = "";
     return input;
 }
@@ -190,15 +236,23 @@ function getClear(value, formula, input) {
 
 function getDelete(value, formula, input) {
     // deletes one input value after clicking "BACKSPACE" or pressing "Backspace" key
+    console.log(input);
     if(input != "") {
     // input = "" + formula[formula.phase];
         input = input.slice(0, input.length - 1);
         formula[formula.phase] = +input;
 
         formula.inputStr = formula.inputStr.slice(0, formula.inputStr.length - 1);
+    } else {
+        // case when after getEqual, input == ""
+        input = "" + formula.num1;
+        input = input.slice(0, input.length - 1);
+        formula.num1 = +input;
+        formula.inputStr = "";
+        updateScreenFormula(formula.inputStr);
     }
     // updateScreenFormula(formula.inputStr);
-    updateScreenValue(formula[formula.phase]);
+    updateScreenValue(addCommas(formula[formula.phase]));
     return input;
 }
 
@@ -213,7 +267,7 @@ function getDecimal(value, formula, input) {
         formula.inputStr += value;
         // updateScreen(formula.inputStr, input);
         // updateScreenFormula(formula.inputStr);
-        updateScreenValue(input);
+        updateScreenValue(addCommas(input));
     }
     return input;
 }
@@ -286,7 +340,12 @@ function main() {
 main();
 
 // Problems:
+// toExponential in UpdateScreenValue assumes the input is a number. When you pass in the return value
+// from addCommas, UpdateScreenValue receives a string.
 
 // Styles to add:
 // - if a key is inputted, the correct button should show a click
 // - comma separator for thousands
+
+// Considerations:
+// - Right now, user input cannot exceed 999,999,999
