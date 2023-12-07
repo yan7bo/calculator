@@ -101,12 +101,28 @@ function getNum(value, formula, input) {
     return input;
 }
 
+function getOperatorBtn(operator) {
+    switch(operator) {
+        case "+":
+            return document.querySelector("#plus");
+        
+        case "-":
+            return document.querySelector("#minus");
+
+        case "*":
+            return document.querySelector("#multiply");
+        
+        case "/":
+            return document.querySelector("#divide");
+    }
+}
+
 function getOperator(value, formula, input) {
     // stores symbol after input including operator symbol
     
     if(formula.phase == "num1") {
         formula.phase = "num2";
-        formula.inputStr += value;
+        formula.inputStr = "" + formula.num1 + value;
         updateScreenFormula(formula.inputStr);
     } else if(formula.phase == "num2") {
         formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
@@ -119,12 +135,18 @@ function getOperator(value, formula, input) {
     input = "";
 
     resetBtnColor(document.querySelectorAll("button"));
-    updateBtnColor(event.target);
+    // console.log(value);
+    const operatorBtn = getOperatorBtn(value);
+    updateBtnColor(operatorBtn);
     return input;
 }
 
 function getEqual(value, formula, input) {
     // performs calculation after "=" input (or "Enter" key)
+    if(value == "Enter") {
+        // When user presses the Enter key
+        value = "=";
+    }
     if(input != "") {
         // if there has been a number input, set that number input into formula
         // operators and equals sign both reset input
@@ -138,7 +160,10 @@ function getEqual(value, formula, input) {
     resetBtnColor(document.querySelectorAll("button"));
 
     // updateScreen(formula.inputStr, formula.solution);
-    resetFormula(formula, "num1", formula.inputStr + value);
+    if(!formula.inputStr.includes("=")) {
+        formula.inputStr += value;
+    }
+    resetFormula(formula, "num1", formula.inputStr);
     updateScreenFormula(formula.inputStr);
     updateScreenValue(formula[formula.phase]);
     input = "";
@@ -215,6 +240,7 @@ function addKeys(formula, input) {
     // adds event handler when a keyboard press has happened
     addEventListener("keydown", (event) => {
         let currentKey = event.key;
+        // console.log(currentKey);
 
         if(LIST_NUMBERS.includes(+currentKey)){
             input = getNum(currentKey, formula, input);
@@ -253,7 +279,8 @@ function main() {
 main();
 
 // Problems:
+// - division by zero: 0/0 = NaN, 5/0 = Infinity
 
 // Styles to add:
-// - if an operator key was inputted, the operator button should be highlighted
 // - if a key is inputted, the correct button should show a click
+// - comma separator for thousands
