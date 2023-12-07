@@ -253,7 +253,6 @@ function main() {
 main();
 
 // Problems:
-// - when there is no formula, calcScreen will center calcScreenValue
 
 // Styles to add:
 // - if an operator key was inputted, the operator button should be highlighted

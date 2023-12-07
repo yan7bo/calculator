@@ -26,6 +26,7 @@
 
 #calcScreen :first-child {
     font-size: 32px;
+    min-height: 37px;
 }
 
 .row {
