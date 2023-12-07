@@ -156,13 +156,20 @@ function getEqual(value, formula, input) {
         formula.num2 = formula.num1;
         formula.inputStr += formula.num2;
     }
-    formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+    if(formula.num2 == 0) {
+        alert("You can't divide by 0!");
+        resetFormula(formula, "num1", "");
+    }
+    else {
+        formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+        if(!formula.inputStr.includes("=")) {
+            formula.inputStr += value;
+        }
+    }
     resetBtnColor(document.querySelectorAll("button"));
 
     // updateScreen(formula.inputStr, formula.solution);
-    if(!formula.inputStr.includes("=")) {
-        formula.inputStr += value;
-    }
+
     resetFormula(formula, "num1", formula.inputStr);
     updateScreenFormula(formula.inputStr);
     updateScreenValue(formula[formula.phase]);
@@ -279,7 +286,6 @@ function main() {
 main();
 
 // Problems:
-// - division by zero: 0/0 = NaN, 5/0 = Infinity
 
 // Styles to add:
 // - if a key is inputted, the correct button should show a click
