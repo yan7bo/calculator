@@ -102,7 +102,7 @@ function addCommas(input) {
     let right = "";
     if(indexDecimal >= 0) {
         left = input.slice(0, indexDecimal);
-        right = input.slice(indexDecimal + 1);
+        right = input.slice(indexDecimal);
     } else {
         left = input.slice(0, input.length);
     }
@@ -114,7 +114,7 @@ function addCommas(input) {
         output += left[i];
     }
     if(right != "") {
-        output += "." + right;
+        output += right;
     }
     // console.log(output);
     return output;
@@ -267,7 +267,7 @@ function getDecimal(value, formula, input) {
         formula.inputStr += value;
         // updateScreen(formula.inputStr, input);
         // updateScreenFormula(formula.inputStr);
-        updateScreenValue(addCommas(input));
+        updateScreenValue(addCommas(formula.inputStr));
     }
     return input;
 }
@@ -275,7 +275,6 @@ function getDecimal(value, formula, input) {
 function addBtns(calcContainer, formula, input) {
     // adds click event handler to calculator buttons
     calcContainer.addEventListener("click", (event) => {
-        console.log("key sent me here");
         let currentBtn = event.target.textContent;
 
         let currentBtnID = event.target.id;
@@ -365,8 +364,6 @@ function main() {
 main();
 
 // Problems:
-// toExponential in UpdateScreenValue assumes the input is a number. When you pass in the return value
-// from addCommas, UpdateScreenValue receives a string.
 
 // Styles to add:
 
