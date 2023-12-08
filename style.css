@@ -1,5 +1,10 @@
+html {
+    background-color: grey;
+}
+
 #calcContainer {
     border: solid black;
+    background-color: rgb(51, 51, 51);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,8 +18,9 @@
 #calcScreen {
     height: 150px;
     width: 318px;
+    margin-bottom: 12px;
     background-color: grey;
-    color: white;
+    color: rgb(49, 47, 45);
     font-size: 64px;
     text-align: right;
     display: flex;
@@ -45,5 +51,20 @@
 }
 
 button:active, button.active {
-    background-color: white;;
+    background-color: white;
+}
+
+button.styleLight {
+    background-color: rgb(217, 216, 208);
+    color: rgb(49, 47, 45);
+}
+
+button.styleOlivia {
+    background-color: rgb(219, 172, 154);
+    color: rgb(49, 47, 45);
+}
+
+button.styleDark {
+    background-color: rgb(49, 47, 45);
+    color: rgb(219, 172, 154);
 }
