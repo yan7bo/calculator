@@ -366,6 +366,13 @@ main();
 // Problems:
 
 // Styles to add:
+// - add better button active color
+// - center calculator on screen
+// - change better border buttons
+// - allow resizing depending on viewport (check popular mobile displays)
+// - change operator button text
+// - resize font
+// - change better font style
 
 // Considerations:
 // - Right now, user input cannot exceed 999,999,999
