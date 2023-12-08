@@ -275,7 +275,9 @@ function getDecimal(value, formula, input) {
 function addBtns(calcContainer, formula, input) {
     // adds click event handler to calculator buttons
     calcContainer.addEventListener("click", (event) => {
+        console.log("key sent me here");
         let currentBtn = event.target.textContent;
+
         let currentBtnID = event.target.id;
         let currentPhase = formula.phase;
 
@@ -297,27 +299,50 @@ function addBtns(calcContainer, formula, input) {
     })
 }
 
+function getBtnFromKey(currentKey) {
+    const listBtns = document.querySelectorAll("button");
+    let result = null;
+    listBtns.forEach((element) => {
+        if(element.textContent == currentKey) {
+            // console.log(element);
+            result = element;
+        }
+    })
+    return result;
+}
+
 function addKeys(formula, input) {
     // adds event handler when a keyboard press has happened
     addEventListener("keydown", (event) => {
         let currentKey = event.key;
         // console.log(currentKey);
 
-        if(LIST_NUMBERS.includes(+currentKey)){
-            input = getNum(currentKey, formula, input);
-        } else if(LIST_OPERATORS.includes(currentKey)) {
-            input = getOperator(currentKey, formula, input);
-        } else if(currentKey == "=" || currentKey == "Enter") {
-            input = getEqual(currentKey, formula, input);
-        } else if(currentKey == "CLEAR") {
-            input = getClear(currentKey, formula, input);
-        } else if(currentKey == "Backspace" || currentKey == "Delete") {
-            input = getDelete(currentKey, formula, input);
-        } else if(currentKey == ".") {
-            input = getDecimal(currentKey, formula, input);
+        // change key values to match button values
+        if(currentKey == "Enter") {
+            currentKey = "=";
+        } else if(currentKey == "Backspace") {
+            currentKey = "BACKSPACE";
+        } else if(currentKey == "Delete") {
+            currentKey = "CLEAR";
         }
 
-        console.log(formula);
+        // const myEvent = new Event("click", {bubbles: true});
+        let myElement = getBtnFromKey(currentKey);
+        // console.log(myEvent);
+        // myElement.dispatchEvent(myEvent);
+        //myElement.dispatchEvent(new Event("mouseup", {bubbles: true}));
+        
+        //myElement.focus();
+        myElement.click();
+        myElement.classList.add("active");
+
+        // console.log(formula);
+    })
+    
+    addEventListener("keyup", (event) => {
+        let currentKey = event.key;
+        let myElement = getBtnFromKey(currentKey);
+        myElement.classList.remove("active");
     })
 }
 
@@ -344,8 +369,7 @@ main();
 // from addCommas, UpdateScreenValue receives a string.
 
 // Styles to add:
-// - if a key is inputted, the correct button should show a click
-// - comma separator for thousands
 
 // Considerations:
 // - Right now, user input cannot exceed 999,999,999
+// - when entering decimal, on the decimal click, the screen does not show decimal. It only shows after a number input
