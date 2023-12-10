@@ -54,17 +54,17 @@ button:active, button.active {
     background-color: white;
 }
 
-button.styleLight {
+.styleLight {
     background-color: rgb(217, 216, 208);
     color: rgb(49, 47, 45);
 }
 
-button.styleOlivia {
+.styleOlivia {
     background-color: rgb(219, 172, 154);
     color: rgb(49, 47, 45);
 }
 
-button.styleDark {
+.styleDark {
     background-color: rgb(49, 47, 45);
     color: rgb(219, 172, 154);
 }
