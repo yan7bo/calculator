@@ -38,20 +38,6 @@ function round(num) {
     }
 }
 
-/*
-function updateScreen(inputStr, value) {
-    // const calcScreen = document.querySelector("#calcScreen > a");
-    const calcScreenFormula = document.querySelector("#calcScreen :first-child");
-    const calcScreenValue = document.querySelector("#calcScreen :nth-child(2)");
-    if(("" + value).length > 10) {
-        value = value.toExponential();
-    }
-    calcScreenFormula.textContent = inputStr;
-    calcScreenValue.textContent = value;
-    
-}
-*/
-
 function updateScreenFormula(inputStr) {
     // updates the formula display in calcScreen
     calcScreenFormula.textContent = inputStr;
@@ -60,11 +46,6 @@ function updateScreenFormula(inputStr) {
 function updateScreenValue(value) {
     // updates the value display in calcScreen
     const calcScreenValue = document.querySelector("#calcScreen :nth-child(2)");
-    /*
-    if(("" + value).length > 10) {
-        value = value.toExponential();
-    }
-    */
     calcScreenValue.textContent = value;
 }
 
@@ -116,7 +97,6 @@ function addCommas(input) {
     if(right != "") {
         output += right;
     }
-    // console.log(output);
     return output;
 }
 
@@ -135,13 +115,6 @@ function getNum(value, formula, input) {
                 formula.inputStr = addCommas(formula.num1) + formula.operator + addCommas(formula.num2);
                 break;
         }
-        /*
-        if(formula[formula.phase] >= 10 ** 10) {updateScreenFormula
-            // if the user continues to input numbers past SIG_DIGS, use scientific notation
-            formula[formula.phase] = formula[formula.phase].toExponential();
-            input = "" + formula[formula.phase];
-        }
-        */
         updateScreenValue(addCommas(input));
     }
     return input;
@@ -181,7 +154,6 @@ function getOperator(value, formula, input) {
     input = "";
 
     resetBtnColor(document.querySelectorAll("button"));
-    // console.log(value);
     const operatorBtn = getOperatorBtn(value);
     updateBtnColor(operatorBtn);
     return input;
@@ -214,8 +186,6 @@ function getEqual(value, formula, input) {
     }
     resetBtnColor(document.querySelectorAll("button"));
 
-    // updateScreen(formula.inputStr, formula.solution);
-
     resetFormula(formula, "num1", formula.inputStr);
     updateScreenFormula(formula.inputStr);
     updateScreenValue(addCommas(formula[formula.phase]));
@@ -228,7 +198,6 @@ function getClear(value, formula, input) {
     resetFormula(formula, "num1", "");
     resetBtnColor(document.querySelectorAll("button"));
     input = "";
-    // updateScreen(formula.inputStr, formula.num1);
     updateScreenFormula(formula.inputStr);
     updateScreenValue(formula[formula.phase]);
     return input;
@@ -238,7 +207,6 @@ function getDelete(value, formula, input) {
     // deletes one input value after clicking "BACKSPACE" or pressing "Backspace" key
     console.log(input);
     if(input != "") {
-    // input = "" + formula[formula.phase];
         input = input.slice(0, input.length - 1);
         formula[formula.phase] = +input;
 
@@ -251,7 +219,6 @@ function getDelete(value, formula, input) {
         formula.inputStr = "";
         updateScreenFormula(formula.inputStr);
     }
-    // updateScreenFormula(formula.inputStr);
     updateScreenValue(addCommas(formula[formula.phase]));
     return input;
 }
@@ -265,8 +232,6 @@ function getDecimal(value, formula, input) {
             input += value;
         }
         formula.inputStr += value;
-        // updateScreen(formula.inputStr, input);
-        // updateScreenFormula(formula.inputStr);
         updateScreenValue(addCommas(formula.inputStr));
     }
     return input;
@@ -303,7 +268,6 @@ function getBtnFromKey(currentKey) {
     let result = null;
     listBtns.forEach((element) => {
         if(element.textContent == currentKey) {
-            // console.log(element);
             result = element;
         }
     })
@@ -314,8 +278,6 @@ function addKeys(formula, input) {
     // adds event handler when a keyboard press has happened
     addEventListener("keydown", (event) => {
         let currentKey = event.key;
-        // console.log(currentKey);
-
         // change key values to match button values
         if(currentKey == "Enter") {
             currentKey = "=";
@@ -324,18 +286,10 @@ function addKeys(formula, input) {
         } else if(currentKey == "Delete") {
             currentKey = "CLEAR";
         }
-
-        // const myEvent = new Event("click", {bubbles: true});
         let myElement = getBtnFromKey(currentKey);
-        // console.log(myEvent);
-        // myElement.dispatchEvent(myEvent);
-        //myElement.dispatchEvent(new Event("mouseup", {bubbles: true}));
-        
-        //myElement.focus();
+
         myElement.click();
         myElement.classList.add("active");
-
-        // console.log(formula);
     })
     
     addEventListener("keyup", (event) => {
@@ -350,7 +304,7 @@ const LIST_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const LIST_OPERATORS = ["/", "*", "-", "+"];
 const LIST_FUNCTIONS = ["CLEAR", "BACKSPACE"];
 const operatorBtnBGColor = "grey";
-const OPERATOR_BTN_CLICK_COL = "white";
+const OPERATOR_BTN_CLICK_COL = "rgb(78, 75, 72)";
 const SIG_DIGS = 9;
 
 function main() {
@@ -366,7 +320,6 @@ main();
 // Problems:
 
 // Styles to add:
-// - add better button active color
 // - center calculator on screen
 // - change better border buttons
 // - allow resizing depending on viewport (check popular mobile displays)

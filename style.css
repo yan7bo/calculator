@@ -50,13 +50,13 @@ html {
     width: 75px;
 }
 
-button:active, button.active {
-    background-color: white;
-}
-
 .styleLight {
     background-color: rgb(217, 216, 208);
     color: rgb(49, 47, 45);
+}
+
+button.styleLight.active, button.styleLight:active{
+    background-color: rgba(217, 216, 208, 0.5);
 }
 
 .styleOlivia {
@@ -64,7 +64,15 @@ button:active, button.active {
     color: rgb(49, 47, 45);
 }
 
+button.styleOlivia.active, button.styleOlivia:active {
+    background-color: rgba(219, 172, 154, 0.5);
+}
+
 .styleDark {
     background-color: rgb(49, 47, 45);
     color: rgb(219, 172, 154);
+}
+
+button.styleDark.active, button.styleDark:active {
+    background-color: rgb(78, 75, 72);
 }
