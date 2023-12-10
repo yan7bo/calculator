@@ -320,7 +320,6 @@ main();
 // Problems:
 
 // Styles to add:
-// - center calculator on screen
 // - change better border buttons
 // - allow resizing depending on viewport (check popular mobile displays)
 // - change operator button text
