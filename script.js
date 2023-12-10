@@ -38,6 +38,19 @@ function round(num) {
     }
 }
 
+function getText(button) {
+    switch(button.id) {
+        case "divide":
+            return "/";
+        
+        case "multiply":
+            return "*";
+
+        default:
+            return button.textContent;
+    }
+}
+
 function updateScreenFormula(inputStr) {
     // updates the formula display in calcScreen
     calcScreenFormula.textContent = inputStr;
@@ -66,7 +79,7 @@ function resetBtnColor(listBtns) {
 
 function updateBtnColor(btn) {
     // sets operator button to the active style after being clicked
-    if(LIST_OPERATORS.includes(btn.textContent)) {
+    if(LIST_OPERATORS.includes(getText(btn))) {
         btn.style.backgroundColor = OPERATOR_BTN_CLICK_COL;
     }
 }
@@ -112,7 +125,7 @@ function getNum(value, formula, input) {
                 formula.inputStr = addCommas(formula.num1);
                 break;
             case "num2":
-                formula.inputStr = addCommas(formula.num1) + formula.operator + addCommas(formula.num2);
+                formula.inputStr = addCommas(formula.num1) + getOperatorString(formula.operator) + addCommas(formula.num2);
                 break;
         }
         updateScreenValue(addCommas(input));
@@ -136,17 +149,35 @@ function getOperatorBtn(operator) {
     }
 }
 
+function getOperatorString(operator) {
+    switch(operator){
+        case "/":
+            return "\u00f7";
+
+        case "*":
+            return "\u00d7";
+
+        default:
+            return operator;
+    }
+}
+
 function getOperator(value, formula, input) {
     // stores symbol after input including operator symbol
-    
+    console.log(formula);
     if(formula.phase == "num1") {
         formula.phase = "num2";
-        formula.inputStr = addCommas(formula.num1) + value;
+        formula.inputStr = addCommas(formula.num1) + getOperatorString(value);
         updateScreenFormula(formula.inputStr);
+        updateScreenValue("0");
     } else if(formula.phase == "num2") {
-        formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
-        // updateScreen(formula.inputStr, formula.solution);
-        resetFormula(formula, "num2", "" + formula.solution + value);
+        if(input != ""){
+            formula.solution = doCalculation(formula.num1, formula.operator, formula.num2);
+            resetFormula(formula, "num2", "" + addCommas(formula.solution) + getOperatorString(value));
+        } else {
+            formula.inputStr = formula.inputStr.slice(0, formula.inputStr.length - 1) + getOperatorString(value);
+            formula.num2 = 0;
+        }
         updateScreenFormula(formula.inputStr);
         updateScreenValue(formula[formula.phase]);
     }
@@ -171,6 +202,7 @@ function getEqual(value, formula, input) {
         formula[formula.phase] = +input;
     }
     if(LIST_OPERATORS.includes(formula.inputStr.slice(formula.inputStr.length - 1))) {
+        // case when user presses = right after an operator
         formula.num2 = formula.num1;
         formula.inputStr += addCommas(formula.num2);
     }
@@ -240,7 +272,7 @@ function getDecimal(value, formula, input) {
 function addBtns(calcContainer, formula, input) {
     // adds click event handler to calculator buttons
     calcContainer.addEventListener("click", (event) => {
-        let currentBtn = event.target.textContent;
+        let currentBtn = getText(event.target);
 
         let currentBtnID = event.target.id;
         let currentPhase = formula.phase;
@@ -265,9 +297,9 @@ function addBtns(calcContainer, formula, input) {
 
 function getBtnFromKey(currentKey) {
     const listBtns = document.querySelectorAll("button");
-    let result = null;
+    let result;
     listBtns.forEach((element) => {
-        if(element.textContent == currentKey) {
+        if(getText(element) == currentKey) {
             result = element;
         }
     })
@@ -320,8 +352,6 @@ main();
 // Problems:
 
 // Styles to add:
-// - allow resizing depending on viewport (check popular mobile displays)
-// - change operator button text
 // - resize font
 // - change better font style
 
