@@ -352,7 +352,6 @@ main();
 // Problems:
 
 // Styles to add:
-// - resize font
 // - change better font style
 
 // Considerations:

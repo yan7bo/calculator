@@ -39,7 +39,7 @@ body {
     border-left-color: rgb(100, 100, 100);
     border-right-color: rgb(170, 170, 170);
     border-bottom-color: rgb(170, 170, 170);
-    font-size: 64px;
+    font-size: 80px;
     text-align: right;
     display: flex;
     flex-direction: column;
@@ -56,6 +56,10 @@ body {
 .row {
     display: flex;
     gap: 6px;
+}
+
+button {
+    font-size: 18px;
 }
 
 .row > button {
