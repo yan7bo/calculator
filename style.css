@@ -10,7 +10,12 @@ body {
 }
 
 #calcContainer {
-    border: solid black;
+    border: 8px outset;
+    border-radius: 20px;
+    border-top-color: rgb(75, 75, 75);
+    border-left-color: rgb(75, 75, 75);
+    border-right-color: rgb(40, 40, 40);
+    border-bottom-color: rgb(40, 40, 40);
     background-color: rgb(51, 51, 51);
     display: flex;
     flex-direction: column;
@@ -28,6 +33,12 @@ body {
     margin-bottom: 12px;
     background-color: rgb(140, 140, 140);
     color: rgb(49, 47, 45);
+    border: 4px inset;
+    border-radius: 8px;
+    border-top-color: rgb(100, 100, 100);
+    border-left-color: rgb(100, 100, 100);
+    border-right-color: rgb(170, 170, 170);
+    border-bottom-color: rgb(170, 170, 170);
     font-size: 64px;
     text-align: right;
     display: flex;
@@ -45,6 +56,27 @@ body {
 .row {
     display: flex;
     gap: 6px;
+}
+
+.row > button {
+    border: outset;
+    border-radius: 4px;
+    border-top-color: rgb(100, 100, 100);
+    border-left-color: rgb(100, 100, 100);
+    border-right-color: rgb(50, 50, 50);
+    border-bottom-color: rgb(50, 50, 50);
+}
+
+.row > button.styleLight {
+    border-top-color: rgb(200, 200, 200);
+    border-left-color: rgb(200, 200, 200);
+    border-right-color: rgb(150, 150, 150);
+    border-bottom-color: rgb(150, 150, 150);
+}
+
+.row > button.styleOlivia {
+    border-right-color: rgb(75, 75, 75);
+    border-bottom-color: rgb(75, 75, 75);
 }
 
 .btnBig {
