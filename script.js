@@ -86,11 +86,26 @@ function updateBtnColor(btn) {
 
 function addCommas(input) {
     // adds comma delims to numbers
-
-    // make sure input is a string
-    input = "" + input;
-
     let output = "";
+
+
+    // if number has more than 9 digits, use scientific notation
+    if(("" + input).length > 9) {
+        output = input.toExponential();
+        if(output.length > 9 && output.includes(".")) {
+            // if scientific notation has a decimal point and overflows the screen
+            console.log(output);
+            let newOutput = "";
+            let decimalIndex = output.indexOf(".");
+            let eIndex = output.indexOf("e");
+            newOutput = output.slice(0, decimalIndex + 1) + output.slice(eIndex);
+            return newOutput;
+        }
+        return output;
+    }
+
+    // adding commas to the number
+    input = "" + input;
     let indexDecimal = input.indexOf(".");
     let left = "";
     let right = "";
@@ -350,7 +365,6 @@ function main() {
 main();
 
 // Problems:
-// when user clicks =, a large number will overflow calcScreen
 
 // Considerations:
 // - Right now, user input cannot exceed 999,999,999
