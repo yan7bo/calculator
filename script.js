@@ -350,10 +350,7 @@ function main() {
 main();
 
 // Problems:
-
-// Styles to add:
-// - change better font style
+// when user clicks =, a large number will overflow calcScreen
 
 // Considerations:
 // - Right now, user input cannot exceed 999,999,999
-// - when entering decimal, on the decimal click, the screen does not show decimal. It only shows after a number input
