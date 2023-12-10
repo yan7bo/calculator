@@ -94,7 +94,6 @@ function addCommas(input) {
         output = input.toExponential();
         if(output.length > 9 && output.includes(".")) {
             // if scientific notation has a decimal point and overflows the screen
-            console.log(output);
             let newOutput = "";
             let decimalIndex = output.indexOf(".");
             let eIndex = output.indexOf("e");
@@ -179,7 +178,6 @@ function getOperatorString(operator) {
 
 function getOperator(value, formula, input) {
     // stores symbol after input including operator symbol
-    console.log(formula);
     if(formula.phase == "num1") {
         formula.phase = "num2";
         formula.inputStr = addCommas(formula.num1) + getOperatorString(value);
@@ -252,7 +250,6 @@ function getClear(value, formula, input) {
 
 function getDelete(value, formula, input) {
     // deletes one input value after clicking "BACKSPACE" or pressing "Backspace" key
-    console.log(input);
     if(input != "") {
         input = input.slice(0, input.length - 1);
         formula[formula.phase] = +input;
@@ -305,8 +302,6 @@ function addBtns(calcContainer, formula, input) {
         } else if(currentBtn == ".") {
             input = getDecimal(currentBtn, formula, input);
         }
-
-        console.log(formula);
     })
 }
 
